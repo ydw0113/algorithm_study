@@ -20,14 +20,25 @@ public class Q16637 {
 		answer = new String[n];
 		copy = new String[n / 2];
 		visited = new boolean[n];
-		int cnt=0;
+		int cnt = 0;
 		for (int i = 0; i < arr.length; i++) {
 			if (i % 2 != 0) {
 				copy[cnt++] = arr[i];
+				if (arr[i].equals("+")) {
+//					sum+=arr[i-1]+arr[i+1];
+				} else if (arr[i].equals("*")) {
+
+				} else if (arr[i].equals("-")) {
+
+				} else if (arr[i].equals("/")) {
+
+				}
+
 			}
 		}
-		for (int i = 1; i <= copy.length; i++)
-			solve(0, 0, i+1);
+
+//		for (int i = 1; i <= copy.length; i++)
+			solve(0, 0, n);
 
 	}
 
@@ -38,10 +49,11 @@ public class Q16637 {
 			print(r);
 			return;
 		} else {
-			for (int i = start; i < copy.length; i++) {
+			for (int i = start; i < arr.length; i++) {
 				if (!visited[i]) {
 					visited[i] = true;
-					answer[depth] = copy[i];
+					answer[depth] = arr[i];
+//					System.out.print(arr[i]);
 					solve(start + 1, depth + 1, r);
 					visited[i] = false;
 				}

@@ -3,70 +3,78 @@ package study;
 import java.util.*;
 
 public class Q15684 {
+	static int n, m, h, count = 0, max;
+	static boolean arr[][], flag = false;
 
-	static int n, m, h, ans = 4;
-	static boolean[][] a;
-
-	static boolean check(boolean[][] a) {
+	public static boolean check() {
 		for (int i = 1; i <= m; i++) {
 			int start = i, end = i;
 			for (int j = 1; j <= n; j++) {
-				if (a[j][end]) {
-					++end;
+				if (arr[j][end]) {
+					end++;
+				} else if (end == 1)
 					continue;
-				}
-				if (end == 1)
-					continue;
-				if (!a[j][end]) {
-					if (a[j][end - 1])
-						--end;
+				else if (!arr[j][end]) {
+					if (arr[j][end - 1])
+						end--;
 				}
 			}
+			// System.out.println(start+" "+end);
 			if (start != end)
 				return false;
 		}
 		return true;
 	}
 
-	static void go(int x, int y, int cnt, boolean[][] a) {
-		if (y == m + 1) {
-			++x;
-			y = 1;
-		}
-		if (cnt == 3 || (x == n && y == m)) {
-			if (check(a))
-				ans = Math.min(ans, cnt);
-			return;
-		}
-
-		// 설치 안하거나
-		go(x, y + 1, cnt, a);
-
-		// 인접한 가로선이 있을 때
-		if (y == m || a[x][y] || (y != 1 && a[x][y - 1]) || a[x][y + 1])
+	public static void solve(int start, int depth, int r) {
+		if (flag)
 			return;
 
-		// 설치하거나
-		a[x][y] = true;
-		go(x, y + 1, cnt + 1, a);
-		a[x][y] = false;
+		if (r == max) {
+//			System.out.println(check());
+			if (check()) {
+				flag = true;
+			}
+			return;
+		} else {
+			for (int i = start; i < m * n; i++) {
+				int x = i / m+1;
+				int y = i % m+1;
+				
+				if (y - 1 < 0 || y >= m)
+					continue;
+//				System.out.println(x+" "+y);
+
+				if (arr[x][y] || arr[x][y - 1] || arr[x][y + 1])
+					continue;
+
+				arr[x][y] = true;
+				solve(i + 1, depth + 1, r + 1);
+				arr[x][y] = false;
+
+			}
+		}
 	}
 
 	public static void main(String[] args) {
-		Scanner in = new Scanner(System.in);
-		m = in.nextInt();
-		h = in.nextInt();
-		n = in.nextInt();
-		a = new boolean[n + 2][m + 2];
+		Scanner sc = new Scanner(System.in);
+		m = sc.nextInt();
+		h = sc.nextInt();
+		n = sc.nextInt();
+		arr = new boolean[n + 1][m + 1];
 
 		for (int i = 0; i < h; i++) {
-			int x = in.nextInt();
-			int y = in.nextInt();
-			a[x][y] = true;
+			int x = sc.nextInt();
+			int y = sc.nextInt();
+			arr[x][y] = true;
 		}
-
-		go(1, 1, 0, a);
-		System.out.println(ans == 4 ? -1 : ans);
-		in.close();
+		for (int i = 0; i <= 3; i++) {
+			max = i;
+			solve(0, 0, 0);
+			if (flag)
+				break;
+		}
+		System.out.println(flag ? max : -1);
+		sc.close();
 	}
 }

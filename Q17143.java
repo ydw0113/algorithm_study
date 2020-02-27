@@ -11,6 +11,7 @@ public class Q17143 {
 	static int R, C, M, arr[][], man = 1, clone[][], min, answer = 0;
 	static boolean visited[][], flag = false;
 	static Queue<shark> q = new LinkedList<shark>();
+	static Queue<shark> q2 = new LinkedList<shark>();
 
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
@@ -44,6 +45,7 @@ public class Q17143 {
 			if (arr[i][m] > 0) {
 				visited[i][m] = true;
 				answer += arr[i][m];
+				// System.out.println(i + " " + m);
 				break;
 			}
 		}
@@ -51,18 +53,14 @@ public class Q17143 {
 
 	public static void move() {
 		while (man <= C) {
-//			System.out.println(man + "초");
-			flag = false;
+			// System.out.println(man + "초");
 			get(man);
 			check();
 			int tmp = q.size();
 			for (int a = 0; a < tmp; a++) {
-				if (q.isEmpty())
-					break;
 				shark sk = q.poll();
 				if (visited[sk.r][sk.c]) {
 					visited[sk.r][sk.c] = false;
-					flag = true;
 					continue;
 				}
 				for (int i = 0; i < sk.s; i++) {
@@ -94,19 +92,32 @@ public class Q17143 {
 				}
 				if (arr[sk.r][sk.c] > 0) {
 					if (arr[sk.r][sk.c] < sk.z) {
+						int tm=q2.size();
+						for (int i = 0; i < tm; i++) {
+							shark s = q2.poll();
+							if (s.z <= arr[sk.r][sk.c] && s.r == sk.r && s.c == sk.c) {
+								continue;
+							} else
+								q2.add(new shark(s.r, s.c, s.s, s.d, s.z));
+						}
 						arr[sk.r][sk.c] = sk.z;
-						q.add(new shark(sk.r, sk.c, sk.s, sk.d, sk.z));
-//						System.out.println(sk.r + " " + sk.c + " " + sk.s + " " + sk.d + " " + sk.z);
+						q2.add(new shark(sk.r, sk.c, sk.s, sk.d, sk.z));
 					} else
 						continue;
 				} else if (arr[sk.r][sk.c] == 0) {
 					arr[sk.r][sk.c] = sk.z;
-					q.add(new shark(sk.r, sk.c, sk.s, sk.d, sk.z));
-//					System.out.println(sk.r + " " + sk.c + " " + sk.s + " " + sk.d + " " + sk.z);
+					q2.add(new shark(sk.r, sk.c, sk.s, sk.d, sk.z));
 				}
 			}
+			int t = q2.size();
+			for (int i = 0; i < t; i++) {
+				shark s = q2.poll();
+				// System.out.println(s.r + " " + s.c + " " + s.s + " " + s.d + " " + s.z);
+				q.add(new shark(s.r, s.c, s.s, s.d, s.z));
+			}
+
 			man++;
-//			System.out.println("크기" + answer);
+			// System.out.println("크기" + answer);
 		}
 	}
 

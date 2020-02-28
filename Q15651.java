@@ -30,7 +30,7 @@ public class Q15651 {
 			sb.append("\n");
 			return;
 		} else {
-			for (int i = 0; i < n; i++) {  
+			for (int i = 0; i < n; i++) {
 				q.add(arr[i]);
 				solve(depth + 1);
 				q.removeLast();

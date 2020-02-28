@@ -2,7 +2,7 @@ package study;
 
 import java.util.Scanner;
 
-public class Q15650 {
+public class Q15652 {
 	static int n, m;
 	static int arr[];
 	static int answer[];
@@ -24,7 +24,7 @@ public class Q15650 {
 	public static void solve(int r, int index, int depth) {
 		if (r == 0) {
 			for (int i : answer) {
-				System.out.print(i+1 + " ");
+				System.out.print(i + 1 + " ");
 			}
 			System.out.println();
 			return;

@@ -47,7 +47,6 @@ public class Q15685 {
 			arr[y][x] = 1;
 			map.add(d);
 			while (g >= t) {
-				// System.out.println(t + "세대 " + gen + " " + map.size());
 				int tmp = map.size();
 				for (int i = 0; i < tmp; i++) {
 					int b = map.poll();
@@ -91,8 +90,8 @@ public class Q15685 {
 	}
 
 	public static void print() {
-		for (int i = 0; i < 101; i++) {
-			for (int j = 0; j < 101; j++) {
+		for (int i = 0; i < 100; i++) {
+			for (int j = 0; j < 100; j++) {
 				if (arr[i][j] == 1 && arr[i + 1][j] == 1 && arr[i][j + 1] == 1 && arr[i + 1][j + 1] == 1)
 					count++;
 			}

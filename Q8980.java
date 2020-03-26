@@ -1,77 +1,89 @@
 package study;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedList;
-import java.util.Scanner;
+import java.util.StringTokenizer;
 
+// 택배 문제
+// 그리디 알고리즘
 public class Q8980 {
-	static LinkedList<tr> li = new LinkedList<tr>();
+	public static void main(String args[]) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		int c = sc.nextInt();
-		int arr[][] = new int[n + 1][n + 1];
-		int clone[][] = new int[n + 1][n + 1];
-		int m = sc.nextInt();
-		int sum = 0;
-		int answer = 0;
+		int n = Integer.valueOf(st.nextToken());
+		int truck = Integer.valueOf(st.nextToken());
+
+		st = new StringTokenizer(br.readLine());
+		int m = Integer.valueOf(st.nextToken());
+
+		int[] boxs = new int[n + 1]; // 인덱스 : 1 ~ n까지. 해당 index 마을에 도착했을 때의 트럭에 담은 박스 개수
+		ArrayList<Town> towns = new ArrayList<Town>();
+
 		for (int i = 0; i < m; i++) {
-			int x = sc.nextInt();
-			int y = sc.nextInt();
-			int d = sc.nextInt();
-			li.add(new tr(x, y, d));
+			st = new StringTokenizer(br.readLine());
+			int from = Integer.valueOf(st.nextToken());
+			int to = Integer.valueOf(st.nextToken());
+			int box = Integer.valueOf(st.nextToken());
+			towns.add(new Town(from, to, box));
 		}
-		Collections.sort(li, new Comparator<tr>() {
-			@Override
-			public int compare(tr s1, tr s2) {
-				if (s1.y < s2.y) {
-					return -1;
-				} else if (s1.y > s2.y) {
-					return 1;
-				} else if (s1.y == s2.y) {
-					if (s1.x < s2.x)
-						return -1;
+
+		Collections.sort(towns); // 받는 마을 오름차순 정렬
+
+		int boxCount = 0;
+		for (Town town : towns) {
+			int start = town.start;
+			int end = town.end;
+			int box = town.box;
+
+			int max = 0;
+			boolean isLoad = true;
+			for (int i = start; i < end; i++) {
+				if (boxs[i] >= truck) {
+					isLoad = false;
+					break;
 				}
-				return 0;
+				max = Math.max(max, boxs[i]);
 			}
-		});
-		for (tr i : li) {
-			
-		}
 
-		for (int i = 1; i < n; i++) {
-			for (int j = 1; j <= n; j++) {
-				sum -= clone[i][j];
-				clone[i][j] = 0;
-				if (sum + arr[i][j] > c) {
-					int tmp = c - sum;
-					sum = c;
-					answer += tmp;
-					clone[j][i] = tmp;
-				} else {
-					clone[j][i] = arr[i][j];
-					sum += arr[i][j];
-					answer += arr[i][j];
+			if (isLoad) {
+				int unloads = truck - max;
+				if (unloads > box) {
+					unloads = box;
 				}
-
+				boxCount += unloads;
+				for (int i = start; i < end; i++) {
+					boxs[i] += unloads;
+				}
 			}
 		}
-		System.out.println(answer);
-
+		System.out.println(boxCount);
 	}
 }
 
-class tr {
-	int x;
-	int y;
-	int d;
+class Town implements Comparable<Town> {
+	int start;
+	int end;
+	int box;
 
-	public tr(int x, int y, int d) {
-		this.x = x;
-		this.y = y;
-		this.d = d;
+	Town(int start, int end, int box) {
+		this.start = start;
+		this.end = end;
+		this.box = box;
+	}
+
+	// 오름차순 정렬을 위한 Comparable 클래스 함수 사용
+	@Override
+	public int compareTo(Town town) {
+		if (this.end < town.end) {
+			return -1;
+		} else if (this.end == town.end) {
+			return 0;
+		} else {
+			return 1;
+		}
 	}
 }

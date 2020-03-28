@@ -21,27 +21,26 @@ public class Q2512 {
 			arr[i] = Integer.parseInt(st.nextToken());
 		}
 		Arrays.sort(arr);
-		int sum = 0;
+		boolean flag = false;
 
 		st = new StringTokenizer(br.readLine());
 		int M = Integer.parseInt(st.nextToken());
+
+		int tmp = 0;
 		for (int i = 0; i < n; i++) {
-			sum += arr[i];
-		}
-		if (sum > M) {
-			int tmp = 0;
-			for (int i = 0; i < n; i++) {
-				if (arr[i] * (n - i) > M) {
-					tmp = M / (n - i);
-					break;
-				} else {
-					M -= arr[i];
-				}
+			if (arr[i] * (n - i) > M) {
+				tmp = M / (n - i);
+				flag = true;
+				break;
+			} else {
+				M -= arr[i];
 			}
-			System.out.println(tmp);
-		} else {
-			System.out.println(arr[n - 1]);
 		}
+		if (flag)
+			System.out.println(tmp);
+		else
+			System.out.println(arr[n - 1]);
+
 	}
 
 }

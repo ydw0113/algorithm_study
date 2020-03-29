@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Q11377 {
+public class Q1867 {
 
-	static int n, m, k;
+	static int n, m;
 	static boolean visited[];
 	static int arr[];
 	static ArrayList<Integer> list[];
@@ -20,34 +20,26 @@ public class Q11377 {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
 		m = Integer.parseInt(st.nextToken());
-		k = Integer.parseInt(st.nextToken());
-		arr = new int[1001];
-		visited = new boolean[1001];
-		list = new ArrayList[1001];
-		int y;
+		arr = new int[101];
+		visited = new boolean[101];
+		list = new ArrayList[n + 1];
 		for (int i = 1; i <= n; i++) {
-			String s = br.readLine();
-			String word[] = s.split(" ");
 			list[i] = new ArrayList<Integer>();
-			for (int j = 1; j < word.length; j++) {
-				y = Integer.parseInt(word[j]);
-				list[i].add(y);
-			}
+		}
+		for (int i = 1; i <= m; i++) {
+			st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			list[a].add(b);
 		}
 
 		Arrays.fill(arr, 0);
+
 		int count = 0;
 		for (int i = 1; i <= n; i++) {
 			Arrays.fill(visited, false);
 			if (dfs(i))
 				count++;
-		}
-		for (int i = 1; i <= n && k > 0; i++) {
-			Arrays.fill(visited, false);
-			if (dfs(i)) {
-				count++;
-				k--;
-			}
 		}
 		System.out.println(count);
 	}

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class Q11377 {
+public class Q11378 {
 
 	static int n, m, k;
 	static boolean visited[];
@@ -34,7 +34,6 @@ public class Q11377 {
 				list[i].add(y);
 			}
 		}
-
 		Arrays.fill(arr, 0);
 		int count = 0;
 		for (int i = 1; i <= n; i++) {
@@ -42,14 +41,22 @@ public class Q11377 {
 			if (dfs(i))
 				count++;
 		}
-		for (int i = 1; i <= n && k > 0; i++) {
-			Arrays.fill(visited, false);
-			if (dfs(i)) {
-				count++;
-				k--;
+
+		boolean flag = true;
+		while (flag && k > 0) {
+			for (int i = 1; i <= n; i++) {
+				Arrays.fill(visited, false);
+				if (dfs(i)) {
+					count++;
+					k--;
+					flag = true;
+					break;
+				} else
+					flag = false;
 			}
 		}
 		System.out.println(count);
+
 	}
 
 	public static boolean dfs(int x) {

@@ -20,7 +20,7 @@ public class Intern_03 {
 			arr[i] = count;
 			count = 0;
 		}
-		int cnt[] = new int[bsize];
+		String cnt[] = new String[bsize];
 		for (int i = 0; i < bsize; i++) {
 			Arrays.fill(visited, false);
 			for (int j = 0; j < usize; j++) {
@@ -37,13 +37,13 @@ public class Intern_03 {
 					}
 				}
 				if (count == arr[i]) {
-					cnt[i]++;
-					System.out.println(user_id[j]);
+					cnt[i]=user_id[j]; 
+					System.out.print(user_id[j]+" ");
 					visited[j] = true;
 				}
 			}
+			System.out.println();
 		}
-		System.out.println(cnt[0]+" "+cnt[1]);
 		return answer;
 	}
 

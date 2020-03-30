@@ -52,7 +52,7 @@ public class Q2414 {
 		for (int i = 1; i <= n; i++) {
 			for (int j = 1; j <= n; j++) {
 				if (board[j][i].equals("*")) {
-					an2[j][i + 1] = num;
+					an2[j][i] = num;
 				} else if (j == n - 1 || j == 0) {
 					continue;
 				} else {

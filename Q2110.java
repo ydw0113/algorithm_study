@@ -14,9 +14,9 @@ public class Q2110 {
 		for (int i = 0; i < n; i++)
 			arr[i] = sc.nextInt();
 		Arrays.sort(arr);
-		int left = arr[0];
-		int right = arr[n - 1];
-		int mid;
+		long left = arr[0];
+		long right = arr[n - 1];
+		long mid;
 		long max = 0;
 
 		while (left <= right) {
@@ -30,7 +30,7 @@ public class Q2110 {
 					start = arr[i];
 				}
 			}
-			System.out.println(left + " " + right + " " + mid);
+//			System.out.println(left + " " + right + " " + mid);
 
 			if (count >= c) {
 				max = mid;

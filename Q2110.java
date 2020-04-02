@@ -5,42 +5,40 @@ import java.util.Scanner;
 
 public class Q2110 {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		Scanner sc = new Scanner(System.in);
-		int n = sc.nextInt();
-		int c = sc.nextInt();
-		int arr[] = new int[n];
-		for (int i = 0; i < n; i++)
-			arr[i] = sc.nextInt();
-		Arrays.sort(arr);
-		long left = arr[0];
-		long right = arr[n - 1];
-		long mid;
-		long max = 0;
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int n = sc.nextInt();
+        int c = sc.nextInt();
 
-		while (left <= right) {
-			mid = (left + right) / 2;
-			long start = arr[0];
-			long count = 1;
+        int[] arr = new int [n];
+        for (int i = 0; i <n ; i++) {
+            arr[i] = sc.nextInt();
+        }
+        Arrays.sort(arr);
+        int left = 1;
+        int right = arr[n-1]-arr[0];
+        int d = 0;
+        int ans = 0;
 
-			for (int i = 0; i < n; i++) {
-				if (arr[i] - start >= mid) {
-					count++;
-					start = arr[i];
-				}
-			}
-//			System.out.println(left + " " + right + " " + mid);
+        while(left <= right){
+            int mid= (left + right) /2;
+            int start = arr[0];
+            int count =1;
+            for (int i = 0; i <n ; i++) { //집집마다 검색함.
+                d= arr[i]-start;
+                if(d >= mid){ //만약 첫번째 집과의 거리가 더 크다면 찾았다고 count 올려주고, 내가 찾는집에 이번 집을 넣어준다.
+                    count++;
+                    start = arr[i];
+                }
+            }
 
-			if (count >= c) {
-				max = mid;
-				left = mid + 1;
-			} else {
-				right = mid - 1;
-			}
-		}
-		System.out.println(max);
-		sc.close();
-	}
-
+            if(count>=c){
+                ans = mid;
+                left = mid + 1;
+            }else{
+                right = mid-1;
+            }
+         }
+        System.out.println(ans);
+    }
 }

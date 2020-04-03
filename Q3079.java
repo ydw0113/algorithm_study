@@ -22,11 +22,10 @@ public class Q3079 {
 		long answer = right;
 		while (left <= right) {
 			mid = (left + right) / 2;
-			System.out.println(mid);
 			int sum = 0;
 			for (int i = 0; i < arr.length; i++)
 				sum += mid / arr[i];
-			System.out.println(sum);
+			System.out.println(mid+" "+sum);
 			if (sum >= m) {
 				answer = Math.min(mid, answer);
 				right = mid - 1;

@@ -20,19 +20,18 @@ public class Q1733 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		n = Integer.parseInt(st.nextToken());
-		arr = new int[1000001];
-		dist = new int[1000001];
-		visited = new boolean[1000001];
+		arr = new int[1000010];
+		dist = new int[1000010];
+		visited = new boolean[1000010];
 		list = new ArrayList[n + 1];
-		int y;
 		for (int i = 1; i <= n; i++) {
-			String s = br.readLine();
-			String word[] = s.split(" ");
 			list[i] = new ArrayList<Integer>();
-			for (int j = 0; j < word.length; j++) {
-				y = Integer.parseInt(word[j]);
-				list[i].add(y);
-			}
+			st = new StringTokenizer(br.readLine());
+			int a = Integer.parseInt(st.nextToken());
+			int b = Integer.parseInt(st.nextToken());
+			list[i].add(a);
+			list[i].add(b);
+
 		}
 
 		Arrays.fill(arr, 0);
@@ -49,13 +48,14 @@ public class Q1733 {
 	}
 
 	public static boolean dfs(int x) {
+		if(x==-1) return true;
 		int size = list[x].size();
 		for (int i = 0; i < size; i++) {
 			int tmp = list[x].get(i);
 			if (visited[tmp])
 				continue;
 			visited[tmp] = true;
-			if (arr[tmp] == 0 || dist[tmp] == dist[x] + 1 && dfs(arr[tmp])) {
+			if (dfs(arr[tmp])) {
 				sb.append(tmp + "\n");
 				dist[tmp] = x + 1;
 				arr[tmp] = x;

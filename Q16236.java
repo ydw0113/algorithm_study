@@ -8,8 +8,8 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Q16236 {
-	static int[] dx = { 0, 0, 1, -1 };
-	static int[] dy = { -1, 1, 0, 0 };
+	static int[] dx = { -1, 0, 1, 0 };
+	static int[] dy = { 0, -1, 0, 1 };
 	static int n, time = 0, sum = 0, tmp = 2;
 	static int[][] arr, copy;
 	static boolean visited[][], flag, flag2;
@@ -55,23 +55,26 @@ public class Q16236 {
 					continue;
 				copy[nx][ny] = copy[d.x][d.y] + 1;
 				if (arr[nx][ny] != 0) {
-					
+
 					System.out.println(copy[nx][ny]);
 					time += copy[nx][ny];
 					arr[nx][ny] = 9;
 					copyMap();
 					tmp++;
+					visited[nx][ny] = true;
+					q.add(new DOT(nx, ny));
+				} else {
+					print();
+					System.out.println();
+					visited[nx][ny] = true;
+					q.add(new DOT(nx, ny));
+					check();
+					if (!flag) {
+						flag2 = true;
+						break;
+					}
+					flag = false;
 				}
-				print();
-				System.out.println();
-				visited[nx][ny] = true;
-				q.add(new DOT(nx, ny));
-				check();
-				if (!flag) {
-					flag2 = true;
-					break;
-				}
-				flag = false;
 			}
 			if (flag2)
 				break;

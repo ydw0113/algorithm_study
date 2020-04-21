@@ -1,108 +1,114 @@
 package study;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.StringTokenizer;
-
+ 
 public class Q2206 {
-	static int n, m;
-	static int arr[][], clone[][];
-	static boolean visited[][];
-	static int dx[] = { -1, 0, 1, 0 };
-	static int dy[] = { 0, -1, 0, 1 };
-	static int count = 0;
-	static int min = 10000000;
-
-	public static void main(String[] args) throws IOException {
-		// TODO Auto-generated method stub
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		n = Integer.parseInt(st.nextToken());
-		m = Integer.parseInt(st.nextToken());
-		arr = new int[n][m];
-		clone = new int[n][m];
-		visited = new boolean[n][m];
-		for (int i = 0; i < n; i++) {
-			String t = br.readLine();
-			String a[] = t.split("");
-			for (int j = 0; j < a.length; j++) {
-				if (a[j].equals("1")) {
-					arr[i][j] = -9;
-				} else
-					arr[i][j] = 0;
-			}
-		}
-
-		comb(0);
-		if (min == 10000000)
-			System.out.println("-1");
-		else {
-			System.out.println(min);
-		}
-
-	}
-
-	public static void bfs(int x, int y) {
-		Queue<ddo> q = new LinkedList<ddo>();
-		q.add(new ddo(x, y));
-		visited[x][y] = true;
-		while (!q.isEmpty()) {
-			ddo d = q.poll();
-			if (min < clone[d.x][d.y])
-				break;
-			for (int i = 0; i < 4; i++) {
-				int nx = d.x + dx[i];
-				int ny = d.y + dy[i];
-				if (nx < 0 || nx >= n || ny < 0 || ny >= m)
-					continue;
-				if (clone[nx][ny] == -9 || visited[nx][ny])
-					continue;
-				visited[nx][ny] = true;
-				clone[nx][ny] = clone[d.x][d.y] + 1;
-				q.add(new ddo(nx, ny));
-			}
-		}
-	}
-
-	public static void comb(int depth) {
-		if (depth == 1) {
-			copyMap();
-			bfs(0, 0);
-			if (clone[n - 1][m - 1] != 0)
-				min = Math.min(min, clone[n - 1][m - 1]);
-			return;
-		}
-		for (int i = 0; i < n * m; i++) {
-			int x = i / m;
-			int y = i % m;
-			if (arr[x][y] == -9) {
-				arr[x][y] = 0;
-				comb(depth + 1);
-				arr[x][y] = -9;
-			}
-		}
-	}
-
-	public static void copyMap() {
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				clone[i][j] = arr[i][j];
-				visited[i][j] = false;
-			}
-		}
-		clone[0][0] = 1;
-
-	}
+ 
+    public static int N, M, ans = Integer.MAX_VALUE;
+    public static int[] dirX = new int[] { 0, 0, -1, 1 };
+    public static int[] dirY = new int[] { -1, 1, 0, 0 };
+    public static int[][] map;
+    public static boolean[][][] visited;
+ 
+    public static void main(String[] args) throws Exception {
+ 
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        map = new int[N][M];
+        visited = new boolean[2][N][M];
+ 
+        for (int i = 0; i < N; i++) {
+            String str = br.readLine();
+            for (int j = 0; j < M; j++) {
+                map[i][j] = Integer.parseInt(str.charAt(j) + "");
+            }
+        }
+        solve();
+        if(ans == Integer.MAX_VALUE)
+            System.out.println(-1);
+        else    
+            System.out.println(ans);
+    }
+ 
+    public static void solve() {
+ 
+        Queue<Node> q = new LinkedList<Node>();
+        q.offer(new Node(0, 0, 1, 0));
+ 
+        while (!q.isEmpty()) {
+ 
+            Node node = q.poll();
+            int row = node.row;
+            int col = node.col;
+            int cnt = node.cnt;
+            int jump = node.jump;
+ 
+            if (row == N - 1 && col == M - 1) {
+                ans = Math.min(ans, cnt);
+                continue;
+            }
+ 
+            for (int i = 0; i < 4; i++) {
+                int nr = row + dirX[i];
+                int nc = col + dirY[i];
+ 
+                if (isBoundary(nr, nc)) {
+                    if (jump == 1) {
+ 
+                        if (!visited[jump][nr][nc] && map[nr][nc] == 0) {
+                            visited[jump][nr][nc] = true;
+                            q.offer(new Node(nr, nc, cnt + 1, jump));
+                        }
+ 
+                    } else { // 벽을 안부순 상태
+ 
+                        if (map[nr][nc] == 1) {
+                            if (!visited[jump + 1][nr][nc]) {
+                                visited[jump + 1][nr][nc] = true;
+                                q.offer(new Node(nr, nc, cnt + 1, jump + 1));
+                            }
+                        } else if (map[nr][nc] == 0) {
+                            if (!visited[jump][nr][nc]) {
+                                visited[jump][nr][nc] = true;
+                                q.offer(new Node(nr, nc, cnt + 1, jump));
+                            }
+                        }
+                    }
+                }
+ 
+            }
+ 
+        }
+    }
+ 
+    public static boolean isBoundary(int row, int col) {
+        return (row >= 0 && row < N) && (col >= 0 && col < M);
+    }
 }
-
-class ddo {
-	int x, y;
-
-	public ddo(int x, int y) {
-		this.x = x;
-		this.y = y;
-	}
+ 
+class Node {
+ 
+    int row;
+    int col;
+    int cnt;
+    int jump;
+ 
+    public Node(int row, int col, int cnt, int jump) {
+        super();
+        this.row = row;
+        this.col = col;
+        this.cnt = cnt;
+        this.jump = jump;
+    }
+ 
 }
+ 
